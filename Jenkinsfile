@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = "harinimatheswaran/myapp"
+        IMAGE_NAME = "Harinimatheswaran/myapp"
         REGISTRY = "docker.io"
         DOCKER_CREDENTIALS_ID = "Docker"
         GITHUB_CREDENTIALS_ID = "github"
@@ -12,14 +12,14 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git credentialsId: GITHUB_CREDENTIALS_ID, url: 'https://github.com/Harinimatheswaran/jenkins.git', branch: 'main'
+                git credentialsId: GITHUB_CREDENTIALS_ID, url: 'https://github.com/Harinimatheswaran/jenkins', branch: 'main'
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "docker build -t $IMAGE_NAME:latest ."
+                    sh "docker build -t ${IMAGE_NAME}:latest ."
                 }
             }
         }
@@ -37,7 +37,9 @@ pipeline {
         stage('Push Image to Docker Registry') {
             steps {
                 script {
-                    sh "docker push $IMAGE_NAME:latest"
+                    // Ensure the image is properly tagged before pushing
+                    sh "docker tag ${IMAGE_NAME}:latest ${REGISTRY}/${IMAGE_NAME}:latest"
+                    sh "docker push ${REGISTRY}/${IMAGE_NAME}:latest"
                 }
             }
         }
@@ -53,10 +55,13 @@ pipeline {
 
     post {
         success {
-            echo 'Pipeline executed successfully! '
+            echo 'Pipeline executed successfully!'
         }
         failure {
             echo 'Pipeline failed! Check the logs for errors.'
         }
     }
 }
+
+
+	
