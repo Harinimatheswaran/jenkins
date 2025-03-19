@@ -4,7 +4,7 @@ pipeline {
     environment {
         IMAGE_NAME = "Harinimatheswaran/myapp"
         REGISTRY = "docker.io"
-        DOCKER_CREDENTIALS_ID = "Docker"
+        DOCKER_CREDENTIALS_ID = "docker"
         GITHUB_CREDENTIALS_ID = "github"
         APP_DIR = "/home/vboxuser/jenkins"
     }
@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                git credentialsId: GITHUB_CREDENTIALS_ID, url: 'https://github.com/Harinimatheswaran/jenkins', branch: 'main'
+                git credentialsId: GITHUB_CREDENTIALS_ID, url: 'https://github.com/Harinimatheswaran/jenkins.git', branch: 'main'
             }
         }
 
@@ -62,6 +62,3 @@ pipeline {
         }
     }
 }
-
-
-	
